@@ -19,6 +19,7 @@ async function run() {
         await client.connect()
         const itemsCollection = client.db('eElectronics').collection('items');
 
+        //get items
         app.get('/items', async(req, res) => {
             const query = {}
             const cursor = itemsCollection.find(query)
@@ -26,6 +27,7 @@ async function run() {
             res.send(items)
         })
 
+        //get one item informations by id
         app.get('/items/:id', async(req, res) => {
             const id = req.params.id
             const query = {_id: ObjectId(id)}
