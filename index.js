@@ -20,7 +20,7 @@ async function run() {
         const itemsCollection = client.db('eElectronics').collection('items');
 
         //get items
-        app.get('/items', async(req, res) => {
+        app.get('/items', async (req, res) => {
             const query = {}
             const cursor = itemsCollection.find(query)
             const items = await cursor.toArray()
@@ -28,11 +28,26 @@ async function run() {
         })
 
         //get one item informations by id
-        app.get('/items/:id', async(req, res) => {
+        app.get('/items/:id', async (req, res) => {
             const id = req.params.id
-            const query = {_id: ObjectId(id)}
+            const query = { _id: ObjectId(id) }
             const items = await itemsCollection.findOne(query)
             res.send(items)
+        })
+
+        //Delivered button updates
+        app.put('/items/:id', async (req, res) => {
+            const id = req.params.id
+            const updateQuantity = req.body
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: {
+                    quantity: updateQuantity.quantity
+                },
+            }
+            const result = await itemsCollection.updateOne(filter, updateDoc, options)
+            res.send(result)
         })
     }
     finally {
