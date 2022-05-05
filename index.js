@@ -49,6 +49,13 @@ async function run() {
             const result = await itemsCollection.updateOne(filter, updateDoc, options)
             res.send(result)
         })
+
+        //add item
+        app.post('/items', async (req, res) => {
+            const newItem = req.body
+            const result = await itemsCollection.insertOne(newItem)
+            res.send(result)
+        })
     }
     finally {
 
