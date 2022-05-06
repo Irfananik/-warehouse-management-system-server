@@ -64,6 +64,16 @@ async function run() {
             const result = await itemsCollection.deleteOne(query)
             res.send(result)
         })
+
+        //my items
+        app.get('/myitem', async (req, res) => {
+            const email = req.query
+            const query = email
+            console.log(email)
+            const cursor = itemsCollection.find(query)
+            const result = await cursor.toArray(cursor)
+            res.send(result)
+        })
     }
     finally {
 
